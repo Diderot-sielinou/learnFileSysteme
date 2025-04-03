@@ -1,0 +1,17 @@
+{
+  "name": "eventwork",
+  "version": "1.0.0",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node exercices1.js",
+    "dev": "nodemon exercices2.js"
+  },
+  "author": "yvan",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
