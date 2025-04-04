@@ -27,8 +27,8 @@ async function loadConfig(files) {
     for (const file of files) {
         try {
             const data = await fs.readFile(file, {encoding:"utf8"});
-            console.log(` Loaded ${file}`);
             configData = { ...configData, ...JSON.parse(data) };
+            console.log(` Loaded ${file}`);
         } catch (err) {
             console.error(` Failed to load ${file}: ${err.message}`);
         }

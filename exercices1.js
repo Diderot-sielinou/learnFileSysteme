@@ -1,32 +1,41 @@
 import EventEmitter from "node:events";
 
+class Overload extends Error {
+  constructor(name=""){
+    super(name+" warnin")
+    this.code= "0001"
+  }
+
+  get name(){
+    return `Overload[${this.code}]`
+  }
+
+}
+
 class server extends EventEmitter {
-  constructor(limitRequest) {
+  constructor(threshold={cpu:80,memory:80}) {
     super();
-    this.limitRequest = limitRequest;
+    this.threshold = threshold;
   }
   count = 1;
-  sendRequest(message) {
-    if (this.count <= this.limitRequest) {
-      this.emit("sendRequest", {
-        port: 3000,
-        status: 200,
-        message: `send request n_O=${this.count }`,
-      });
+  sendRequest() {
+    const cpuUsage = Math.random() * 100; // Simulation
+    const memoryUsage = Math.random() * 100; // Simulation
+
+    if (cpuUsage < this.threshold.cpu || memoryUsage < this.threshold.memory) {
+      this.emit("sendRequest", `CPU: ${cpuUsage.toFixed(2)}%, Memory: ${memoryUsage.toFixed(2)}%`);
     } else {
       this.emit(
         "error",
-        new Error(` faill to send request n_O=${
-            this.count
-          } because the server overload `)
+        new Overload(`⚠️ Overload detected! CPU: ${cpuUsage.toFixed(2)}%, Memory: ${memoryUsage.toFixed(2)}%`)
         );
-        this.removeAllListeners()
+        process.exit(1);
       }
     this.count++;
   }
 }
 
-const server1 = new server(5);
+const server1 = new server();
 server1.once("sendRequest", (data) => {
   console.log("first requeste ", data);
 });
